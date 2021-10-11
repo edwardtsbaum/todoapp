@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<body background="{{ url_for('static', filename='images/forest.jpg') }}">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <form action="{{ url_for('new_task') }}" method="POST">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="input-group">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <h5 class="card-header">New Task</h5>
+                                
+                                {% if form.task.errors %}
+                                    {{ form.task(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.task.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.task(class="form-control form-control-lg") }}
+                                {% endif %}
+                                <div class="col-12" id="enter">
+                                    {{ form.submit(class="btn btn-primary btn-sm") }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <h5 class="card-header">Due Date</h5>
+                                
+                                {% if form.duedate.errors %}
+                                    {{ form.duedate(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.duedate.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.duedate(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            
+                        </div>
+                    </fieldset>
+                    
+                </form>
+            </div>
+        </div>
+    
+        <!--Displaying the tasks-->
+        <div class="row">
+            <div class="col">
+                <div>
+                    <div class="card w-75">
+                        <h5 class="card-header">Tasks</h5>
+                        
+                        {% for task in incomplete %}
+                        <div class="card-body">
+                          <h6 class="card-title">{{ task.duedate }}</h6>
+                          <p class="card-text" id="task-item">{{ task.task }}</p>
+                          <a class="btn btn-primary btn-sm" id="complete" href="{{ url_for('complete', id=task.id) }}" role="button">
+                            mark complete
+                            </a>
+                          <a class="btn btn-primary btn-sm" id="edit" href="{{ url_for('update', id=task.id) }}" >Edit</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        {% for task in complete %}
+                        <div class="col-sm-6">
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Completed</h5>
+                              <p class="card-text">{{ task.task }}</p>
+                              <a class="btn btn-primary btn-sm" id="incomplete" href="{{ url_for('incomplete', id=task.id) }}" role="button">
+                                mark incomplete
+                                </a>
+                                <a class="btn btn-primary btn-sm btn-danger" href="{{ url_for('delete', id=task.id) }}" role="button">delete</a>
+                            </div>
+                          </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</body>
+{% endblock %}

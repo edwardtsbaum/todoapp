@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+.container{
+    padding: 10px;
+    white-space: normal;
+}
+#task_entry_box{
+    max-width: 350px;
+    height: 130px;
+    width: 225px;
+}
+#task_entry{
+    width:400px;
+    float:left;
+    height:150px;
+    margin:10px;
+}
+#complete{
+    float:left;
+    margin: 1px;
+}
+#edit{
+    float:left;
+    margin: 1px;
+}
+#date_entry_box{
+    width:135px;
+}
+#enter{
+    float:right;
+    margin: 10px;;
+}
+
+#task-item{
+    border-bottom: 2px black;
+}
+.card{
+    margin: 10px;
+}

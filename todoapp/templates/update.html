@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block head %}{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="container-md">
+        <div class="row">
+            <div class="col">
+                <form action="{{ url_for('update', id=updatetask.id) }}" method="POST">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="input-group">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <h5 class="card-header">Update Task</h5>
+                                
+                                {% if form.task.errors %}
+                                    {{ form.task(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.task.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.task(class="form-control form-control-lg", value="{{updatetask.task}}") }}
+                                {% endif %}
+                                <div class="col-12" id="enter">
+                                    {{ form.submit(class="btn btn-primary btn-sm") }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <h5 class="card-header">Due Date</h5>
+                                
+                                {% if form.duedate.errors %}
+                                    {{ form.duedate(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.duedate.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.duedate(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

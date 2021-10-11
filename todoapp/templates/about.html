@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block head %}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <dive>
+                <h1>About This App</h1>
+            <p>
+                This is a To-Do application that works with a Flask framework. This is a beginner application and is not by
+                any means the final product. Criticize lightly please. 
+            </p>
+            <h2>Specifications</h2>
+            <ul>
+                <li>
+                    You can sign up and create a user profile.
+                </li>
+                <li>
+                    You can login.
+                </li>
+                <li>
+                    When logged in you can only see the logout route.
+                </li>
+                <li>
+                    Cannot access the todoapp without logging in.
+                </li>
+                <li>
+                    you can enter tasks and due dates.
+                </li>
+                <li>
+                    You can edit your tasks.
+                </li>
+                <li>
+                    You can mark your tasks complete.
+                </li>
+                <li>
+                    You can mark your task incomplete.
+                </li>
+                <li>
+                    You can delete tasks.
+                </li>
+            </ul>
+            <h2>Features that didn't make it</h2>
+            <ul>
+                <li>
+                    You cannot sort the todos.
+                </li>
+                <li>
+                    There is a bug that lets you set todos before the current date.
+                </li>
+                <li>
+                    You cannot edit the due dates.
+                </li>
+                <li>
+                    Did not include profile specific todos.
+                </li>
+                <li>
+                    the forgot password feature.
+                </li>
+            </ul>
+            <h3>You can click on the Todo App to go to your home page.</h3>
+            </dive>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
