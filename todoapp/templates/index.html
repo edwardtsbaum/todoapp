@@ -51,6 +51,8 @@
                     </fieldset>
                     
                 </form>
+                
+                
             </div>
         </div>
     
@@ -61,6 +63,7 @@
                     <div class="card w-75">
                         <h5 class="card-header">Tasks</h5>
                         
+                            <a class="btn btn-primary btn-sm" id="sort" href="{{ url_for('sort') }}" >sort</a>
                         {% for task in incomplete %}
                         <div class="card-body">
                           <h6 class="card-title">{{ task.duedate }}</h6>
