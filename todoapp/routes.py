@@ -1,20 +1,29 @@
+import os
+import secrets
 from operator import attrgetter
 from flask import request, render_template, url_for, redirect, session, flash, jsonify
 from todoapp import app, db, bcrypt
 from todoapp.models import Todo, User
-from todoapp.forms import RegistrationForm, LoginForm, TaskForm
+from todoapp.forms import RegistrationForm, LoginForm, TaskForm, UpdateAccountForm
 from flask_login import login_user, current_user, logout_user, login_required
+
 
 @app.route('/')
 @login_required
 def index():
-    incomplete = Todo.query.filter_by(complete=False).all()
+
+    
     complete = Todo.query.filter_by(complete=True).all()
     form = TaskForm()
-    sorttasks = Todo.query.all()
-    form = TaskForm()
+    incomplete = Todo.query.filter_by(complete=False).all()
+
+    user = User()
+    user.task
     
-    return render_template('index.html', incomplete=incomplete, complete=complete, form=form, sorttasks=sorttasks)
+    
+
+    
+    return render_template('index.html', form=form, incomplete=incomplete)
 
 #User system
 @app.route('/register', methods=['GET', 'POST'])
@@ -54,19 +63,45 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+def save_picture(form_photo):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_photo.filename)
+    photo_filename = random_hex + f_ext
+    photo_path = os.path.join(app.root_path, 'static/profile_pics', photo_filename)
+    form_photo.save(photo_path)
+
+    return photo_filename
+
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html', title='Account')
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.photo.data:
+            photo_file = save_picture(form.photo.data)
+            current_user.image_file = photo_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        try:
+            db.session.commit()
+            flash('Your account has been updated.', 'success')
+            return redirect(url_for('account'))
+        except:
+            flash('There was an issue updating your information', 'danger')
+    elif request.method == 'GET': 
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    image_file = url_for('static', filename = 'profile_pics/' + current_user.image_file)
+    return render_template('account.html', title='Account', image_file=image_file, form=form)
 
 
 #Task Functionality
-@app.route('/task/', methods=['GET', 'POST'])
+@app.route('/task/new', methods=['GET', 'POST'])
 @login_required
 def new_task():
-    form = TaskForm()
-    task = Todo(task=form.task.data, duedate=form.duedate.data, complete=False)
+    form = TaskForm() 
     if form.validate_on_submit():   
+        task = Todo(task=form.task.data, duedate=form.duedate.data, complete=False, user=current_user)
         try:
             db.session.add(task)
             db.session.commit()
@@ -87,15 +122,16 @@ def complete(id):
 
     return redirect(url_for('index'))
 
-@app.route('/incomplete/<id>')
+@app.route('/tasks/<id>', methods=['GET', 'POST'])
 @login_required
-def incomplete(id):
+def tasks(id):
     
+    form = TaskForm
     task = Todo.query.filter_by(id=int(id)).first()
     task.complete = False
-    
-    db.session.commit()
 
+    db.session.commit()
+    
     
     return redirect(url_for('index'))
 
@@ -104,8 +140,11 @@ def incomplete(id):
 def delete(id):
     task = Todo.query.filter_by(id=int(id)).one()
     task.complete = True
-    db.session.delete(task)
-    db.session.commit()
+    try:
+        db.session.delete(task)
+        db.session.commit()
+    except:
+        flash('There was an issue deleting your task.', 'danger')
 
     return redirect(url_for('index'))
 

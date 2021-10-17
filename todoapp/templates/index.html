@@ -51,8 +51,6 @@
                     </fieldset>
                     
                 </form>
-                
-                
             </div>
         </div>
     
@@ -63,10 +61,11 @@
                     <div class="card w-75">
                         <h5 class="card-header">Tasks</h5>
                         
-                            <a class="btn btn-primary btn-sm" id="sort" href="{{ url_for('sort') }}" >sort</a>
+                            
+                        
                         {% for task in incomplete %}
                         <div class="card-body">
-                          <h6 class="card-title">{{ task.duedate }}</h6>
+                          <h6 class="card-title">{{ task.duedate.strftime('%Y-%m-%d') }}</h6>
                           <p class="card-text" id="task-item">{{ task.task }}</p>
                           <a class="btn btn-primary btn-sm" id="complete" href="{{ url_for('complete', id=task.id) }}" role="button">
                             mark complete
@@ -74,6 +73,7 @@
                           <a class="btn btn-primary btn-sm" id="edit" href="{{ url_for('update', id=task.id) }}" >Edit</a>
                         </div>
                         {% endfor %}
+                        
                     </div>
                     <div class="row">
                         {% for task in complete %}
@@ -82,7 +82,7 @@
                             <div class="card-body">
                               <h5 class="card-title">Completed</h5>
                               <p class="card-text">{{ task.task }}</p>
-                              <a class="btn btn-primary btn-sm" id="incomplete" href="{{ url_for('incomplete', id=task.id) }}" role="button">
+                              <a class="btn btn-primary btn-sm" id="incomplete" href="{{ url_for('tasks', id=task.id) }}" role="button">
                                 mark incomplete
                                 </a>
                                 <a class="btn btn-primary btn-sm btn-danger" href="{{ url_for('delete', id=task.id) }}" role="button">delete</a>
@@ -90,6 +90,7 @@
                           </div>
                         </div>
                         {% endfor %}
+                    
                     </div>
                 </div>
             </div> 
